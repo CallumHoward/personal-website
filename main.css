@@ -1,0 +1,143 @@
+html {
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#1d1e21+0,001038+100 */
+  background: #1d1e21; /* Old browsers */
+  background: -moz-linear-gradient(-45deg, #1d1e21 0%, #001038 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(-45deg, #1d1e21 0%,#001038 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(135deg, #1d1e21 0%,#001038 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1d1e21', endColorstr='#001038',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
+  animation: fadein 1s;
+  -moz-animation: fadein 1s; /* Firefox */
+  -webkit-animation: fadein 1s; /* Safari and Chrome */
+  -o-animation: fadein 1s; /* Opera */
+}
+
+section {
+  color: white;
+}
+
+section .title {
+  color: white;
+}
+
+section .subtitle {
+  color: white;
+}
+
+@keyframes fadein {
+    from {
+        opacity:0;
+    }
+    to {
+        opacity:1;
+    }
+}
+
+@-moz-keyframes fadein { /* Firefox */
+    from {
+        opacity:0;
+    }
+    to {
+        opacity:1;
+    }
+}
+
+@-webkit-keyframes fadein { /* Safari and Chrome */
+    from {
+        opacity:0;
+    }
+    to {
+        opacity:1;
+    }
+}
+
+@-o-keyframes fadein { /* Opera */
+    from {
+        opacity:0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+#ars-anima-hero .is-active {
+  background-color: rgba(6, 25, 48, 0);
+}
+
+#ars-anima-hero a.navbar-item:hover {
+  background-color: rgba(6, 25, 48, 1);
+}
+
+#ars-anima-hero .navbar {
+  height: 0;
+}
+
+#ars-anima-hero #navbarMenuHeroC {
+  text-align: right;
+  padding-right: 8px;
+  /*
+  padding-top: 20px;
+  height: 0;
+  */
+}
+
+.clearfix:after {
+  content: "";
+  visibility: hidden;
+  display: block;
+  height: 0;
+  clear: both;
+}
+
+.alt-section {
+  background: #162348;
+}
+
+section .caption {
+  font-size: 0.8rem;
+  font-weight: 100;
+}
+
+#research-section .research-element {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-color: inherit;
+}
+
+#contact-section {
+  margin-bottom: 64px;
+}
+
+#contact-section a, #research-section a {
+  text-decoration: underline;
+}
+
+#contact-section a:link, #research-section a:link {
+  color: white;
+}
+
+#contact-section a:visited, #research-section a:visited {
+  color: white;
+}
+
+#contact-section a:hover, #research-section a:hover {
+  color: white;
+  background-color: rgba(6, 25, 48, 1);
+}
+
+#contact-section .contact-element, #research-section .research-element {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: inherit;
+}
+
+#contact-section .contact-element .icon {
+  margin-right: 10px;
+}
+
+section .slideshare {
+  text-align: center;
+}
