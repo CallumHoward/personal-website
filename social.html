@@ -1,0 +1,154 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Callum Howard</title>
+
+  <link rel="stylesheet" href="main.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css" />
+
+  <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+          integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+          crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <section id="callum-howard-hero" class="hero is-fullheight">
+    <!-- Hero head: will stick at the top -->
+    <!--<div class="hero-head">
+      <header class="navbar">
+        <div class="container">
+
+          <div class="navbar-brand">
+            <span id="navbar-burger-id" class="navbar-burger burger" data-target="navbarMenuHeroC">
+              <span></span>
+              <span></span>
+              <span></span>
+            </span>
+          </div>
+
+          <div id="navbarMenuHeroC" class="navbar-menu clearfix">
+            <div class="navbar-end">
+              <a href="#" id="home-button" class="navbar-item is-active">
+                Home
+              </a>
+              <a href="#project" id="project-button" class="navbar-item">
+                Project
+              </a>
+              <a href="#gallery" id="gallery-button" class="navbar-item">
+                Gallery
+              </a>
+              <a href="#research" id="research-button" class="navbar-item">
+                Research
+              </a>
+              <a href="#contact" id="contact-button" class="navbar-item">
+                Contact
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </header>
+    </div>-->
+
+    <!-- Hero content: will be in the middle -->
+
+    <a name="home"></a>
+    <div class="hero-body">
+      <div class="container has-text-centered">
+        <h1 class="title">
+          Callum Howard
+        </h1>
+      </div>
+    </div>
+
+    <div id="contact-section" class="container">
+      <div class="contact-element">
+        <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#119;&#99;&#109;&#106;&#104;&#111;&#119;&#97;&#114;&#100;&#43;&#119;&#101;&#98;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;"
+          <span class="icon is-large"><i class="far fa-2x fa-envelope"></i></span>
+        </a>
+
+        <a href="https://www.facebook.com/Spikey8D"
+          <span class="icon is-large"><i class="fab fa-2x fa-facebook-square"></i></span>
+        </a>
+
+        <a href="https://www.linkedin.com/in/callumhoward/"
+          <span class="icon is-large"><i class="fab fa-2x fa-linkedin-in"></i></span>
+        </a>
+
+        <a href="https://www.instagram.com/spikey8d"
+          <span class="icon is-large"><i class="fab fa-2x fa-instagram"></i></span>
+        </a>
+
+        <a href="https://github.com/CallumHoward"
+          <span class="icon is-large"><i class="fab fa-2x fa-github"></i></span>
+        </a>
+
+      </div>
+    </div>
+
+  </section>
+
+</body>
+
+<script>
+  // Close mobile & tablet menu on item click
+  $('.navbar-item').each(function(e) {
+    $(this).click(function() {
+      if ($('#navbar-burger-id').hasClass('is-active')){
+        $('#navbar-burger-id').removeClass('is-active');
+        $('#navbarMenuHeroC').removeClass('is-active');
+        $('header').removeClass('is-active');
+      }
+    });
+  });
+
+  // Open or Close mobile & tablet menu
+  $('#navbar-burger-id').click(function() {
+    if ($('#navbar-burger-id').hasClass('is-active')){
+      $('#navbar-burger-id').removeClass('is-active');
+      $('#navbarMenuHeroC').removeClass('is-active');
+      $('header').removeClass('is-active');
+    } else {
+      $('#navbar-burger-id').addClass('is-active');
+      $('#navbarMenuHeroC').addClass('is-active');
+      $('header').addClass('is-active');
+    }
+  });
+</script>
+
+<script>
+  function scrollToAnchor(aid){
+      var aTag = $("a[name='"+ aid +"']");
+      $('html,body').animate({scrollTop: aTag.offset().top},'slow');
+  }
+
+  $("#project-button").click(function() { scrollToAnchor('project'); });
+  $("#gallery-button").click(function() { scrollToAnchor('gallery'); });
+  $("#research-button").click(function() { scrollToAnchor('research'); });
+  $("#contact-button").click(function() { scrollToAnchor('contact'); });
+</script>
+
+<script>
+  $(document).ready(function(){
+
+    $(".email").each(function(){
+        var ats, dots, address, i;
+        ats = [' (at) '];
+        dots = [' (dot) '];
+        address = $(this).html();
+        for ( i = 0; i < ats.length; i++ ) {
+            address = address.replace(ats[i], '@');
+        }
+        for ( i = 0; i < dots.length; i++ ) {
+            address = address.replace(dots[i], '.');
+        }
+        $(this).html('<a href="mailto:' + address + '">' + address + '</a>');
+    });
+
+  });
+</script>
