@@ -62,12 +62,9 @@ export const ComponentVariants: Story = () => (
 );
 ```
 
-<aside class="notes">
 There is some duplication here that we can improve upon. Consider also that the types might be defined in a separate file. If a new variant gets added to the type, updating the places were variant arrays are defined could be easily forgotten.
 
 Instead we can define the union type in terms of a co-located const array, both of which can be exported and used. Uppercase naming for the array is used to denote that it is a constant.
-
-</aside>
 
 ### Example: Better approach ✅
 
@@ -90,12 +87,9 @@ export const ComponentVariants: Story = () => (
 );
 ```
 
-<aside class="notes">
 `as const` is required, as this prevents further modification of the array. Without it, the element type of the array would be widened to `string[]`.
 
 An argument could be made that exporting the array from the `types.ts` is not ideal and should instead be exported from another file `constants.ts`. An exception can be made here, as there is value in co-locating the array with the type definition.
-
-</aside>
 
 ### ✍️ Exercise: Reduce duplicate specifications of `BannerVariants` in the `Banner` component
 
@@ -226,7 +220,7 @@ const variantStyleSelector = ({
  * Notification badge is intended to be used for displaying the number of items
  * requiring a user's attention. It can appear in the top corner of another element.
  */
-export const StyledNotificationBadge = styled(NotificationBadge)`
+extionBadge = styled(NotificationBadge)`
   border-radius: ${(p) => p.theme._ui.radii.full};
   display: flex;
   align-items: center;
@@ -236,9 +230,7 @@ export const StyledNotificationBadge = styled(NotificationBadge)`
 `;
 ```
 
-<aside class="notes">
 This pattern encapsulates the logic for styling based on props and ensures that if new variants are added, removed or renamed, strong typing will help to prevent permutations from being missed. `FlattenSimpleInterpolation` and the `css` template literal tag also help with strong typing, helping to identify and prevent typos or mistakes in CSS rules. The `WithThemeProps` type allows us to access the theme object on the props which has colors values, spaces and other tokens.
-</aside>
 
 ---
 
@@ -331,7 +323,7 @@ By spreading props passed to our component by the consumer onto the underlying H
 
 --
 
-There are some considerations though as we have to be careful not to spread React props on to a native HTML element. 
+There are some considerations though as we have to be careful not to spread React props on to a native HTML element.
 
 --
 
@@ -372,34 +364,230 @@ Consider if the component needs to be rendered as a dynamic list of elements and
 # Compound component pattern
 
 - **Pattern Type:** `React`
-- **References:** [patterns.dev](https://www.patterns.dev/react/compound-pattern)
+- **References:** [sc-web-ui Guidelines](https://sandpit-app.safetyculture.com/storybook/sc-web-ui/index.html?path=/docs/documentation-development-guidelines--docs#compound-components), [patterns.dev](https://www.patterns.dev/react/compound-pattern), [frontendmastery.com](https://frontendmastery.com/posts/advanced-react-component-composition-guide/)
 
 ### Description
 
+The compound component pattern is when multiple components are used together to make an element. An example from HTML would be the `select` element.
+
+```html
+<select id="cars" name="cars">
+  <option value="audi">Audi</option>
+  <option value="mercedes">Mercedes</option>
+</select>
+```
+
+Anhe hood to create this nice API, but that's what we are going to demystify here.
+
 ---
 
-# Render props pattern
+The compound component pattern often necessitates the sharing of state between components under the hood.
 
-- **Pattern Type:** `React`
-- **Prerequisites:** Dependency Injection, Children prop pattern, Clone element pattern
+---
+
+Let's look at some different examples of component APIs for a `Select` component.
+
+---
+
+Example 1:
+
+```ts
+<Select options={options} hasClearButton />
+```
+
+---
+
+Example 2:
+
+```ts
+<Select>
+  <Select.ClearButton />
+  <Select.Option>Banana</Select.Option>
+  <Select.Option>Strawberry</Select.Option>
+  <Select.Option>Blueberry</Select.Option>
+</Select>
+```
+
+---
+
+Example 3
+
+```ts
+<Select>
+  <Select.ClearButton />
+  <section>
+    <Select.Option>Banana</Select.Option>
+    <Select.Option>Strawberry</Select.Option>
+    <Select.Option>Blueberry</Select.Option>
+    <footer>
+      <button>Add new fruit</button>
+    </footer>
+  </section>
+</Select>
+```
+
+---
+
+Example 4:
+
+```ts
+<Select>
+  <Select.Trigger>
+    <MyBadge />
+  </Select.Trigger>
+  <Select.EndSlot>
+    {(handleClick) => <button onClick={handleClick}>Clear</button>}
+  </Select.EndSlot>
+
+  <Select.Content>
+    <Select.Option>Banana</Select.Option>
+    <Select.Option>Strawberry</Select.Option>
+    <Select.Option>Blueberry</Select.Option>
+  </Select.Content>
+</Select>
+```
+
+---
+
+Example 5:
+
+```ts
+() => {
+  const { value, triggerProps, optionProps, clearButtonProps } = useSelect();
+
+  return (
+    <div>
+      <button {...triggerProps}>{value}</button>
+      <Flyout>
+        <ul>
+          {options.map((option) => (
+            <li {...optionProps}>{option}</li>
+          ))}
+        </ul>
+      </Flyout>
+    </div>
+  );
+}
+```
+
+---
+
+## No compound component pattern
 
 ### Description
 
----
+Control with boolean or union props.
 
-# Clone element pattern
+**Example API usage:**
+
+```ts
+<Select
+  options={options}
+  closeButtonProps={{}}
+  triggerButtonProps={{}}
+  hasClearButton
+/>
+```
+
+Pros:
+
+- 🙂 Simple to implement initially
+- 🙂 Easy to understand API, no magic
+
+Cons:
+
+- 😐 Least flexible, not composable
+- 🙁 End up with long prop lists and complex prop types
+- 🙁 Can become a monster of branching statements and undefined states
+
+Sckit, react-select, and Mantine amongst others use this pattern for Selects.
+
+## Prop injection pattern (CloneElement)
 
 - **Pattern Type:** `React`
 - **Prerequisites:** Children prop pattern
 
 ### Description
 
+By using `React.Children.map` it is possible to filter through children to define custom placement. Combining this with `React.cloneElement` allows for the injection of props into children. Great for simple cases where the shape of the children is known ahead of time.
+
+- Using a library provided component
+- Using a consumer provided component
+
+Pros:
+
+- 🙂 Great for injecting props in simple cases.
+- 😀 No need for extra changes in the child
+- 😀 Great for things like injecting key event listeners to provide a11y
+
+Cons:
+
+- 🙁 Can’t handle nested children without ugly recursion
+- 😐 Makes assumptions about the children
+- 😐 Some type magic and type safety sacrificed
+- 😐 Some ambiguity about positioning of children
+- 🙁 Cloning is not performant as it makes a copy each time
+
 ---
 
-# React Context for compound components
+## Render props pattern
+
+- **Pattern Type:** `React`
+- **Prerequisites:** Dependency Injection, Children prop pattern, Clone element pattern
+
+### Description
+
+Inversion of control, lets consumer’s components decide what to put inside.
+
+Pros:
+
+- 🙂 Flexible
+- 🙂 No ambiguity about positioning of children
+- 🙂 Less magic, easier to implement
+
+Cons:
+
+- 🙁 Still can't handle nested children
+
+---
+
+## React Context for compound components
 
 - **Pattern Type:** `React`
 
 ### Description
 
+Full control, recommended approach.
+
+Pros:
+
+- 😀 Handles nested children
+- 😀 Very flexible
+
+Cons:
+
+- 😐 Requires hook to be used by consumer within children
+- 😐 This exposes the implementation a bit, though it can be constrained
+
 ---
+
+## Hook-only component API
+
+- **Pattern Type:** `React`
+
+### Description
+
+Only a hook is provided, giving the headless behaviour of the component.
+
+Pros:
+
+- 😀 Maximum flexibility
+- 🙂 Great for complex headless components (eg. `Table`)
+
+Cons:
+
+- 🤔 Too much flexibility?
+- 🤔 Limited ability for the library to define how the component should look
+
+This approach is taken by TanStack Table and Downshift amongst others.
+advantage of using the compound component pattern in React is that it allows for a more flexible API design. A disadvantage is that it is more complex under tport const StyledNotifica
